@@ -51,13 +51,11 @@ void drawScene() {
 	GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 	
-	GLfloat lightColor[] = {0.7f, 0.7f, 0.7f, 1.0f};
-	GLfloat lightPos[] = {-2 * BOX_SIZE, BOX_SIZE, 4 * BOX_SIZE, 1.0f};
+	GLfloat lightColor[] = {0.7f, 1.7f, 0.7f, 1.0f};
+	GLfloat lightPos[] = {0, 0, 1.0f};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-	
-	glRotatef(-_angle, 1.0f, 1.0f, 0.0f);
-	
+	glRotatef(-_angle, 0.0f, 1.0f, 1.0f);
 	glBegin(GL_QUADS);
 	
 
