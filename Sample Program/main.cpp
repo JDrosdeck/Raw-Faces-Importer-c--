@@ -47,7 +47,7 @@ void drawScene() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	glTranslatef(0.0f, 0.0f, -20.0f);
+	glTranslatef(1.0f, -2.0f, -15.0f);
 	
 	GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
@@ -70,7 +70,7 @@ void drawScene() {
 	
 	
 
-	float **model = readModel("chair.RAW");
+	float **model = readModel("small_blimp.RAW");
 	int x;
 	for(x = 0; x < getLength(); x++)
 	{
@@ -92,7 +92,7 @@ void drawScene() {
 
 //Called every 25 milliseconds
 void update(int value) {
-	_angle += 1.0f;
+	_angle += 10.0f;
 	if (_angle > 360) {
 		_angle -= 360;
 	}
