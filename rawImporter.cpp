@@ -28,28 +28,41 @@ float** readModel(string filePath)
 	}
 	
 	//Loop through once so we can determine how large to make the array
-	int maxVerticies = 1;
-	int numberOfPoints = 1;
-	float *points;
 	string line;
+	float **vertexList;
+	int arrayIndex = 0;	
+	int index = 0;
+	
+		
 	getline(model, line);
 	if(model) 
 	{
-		points = (float *) malloc(1 * sizeof(float));
-		if(points == NULL)
+
+		//The model is OK for reading, Allocate some space for the first numbers
+		
+		vertexList = (float **) malloc(1 * sizeof(float));
+		if(vertexList == NULL)
+		{
+			cout << "Error: Malloc unable to allocate enough memory" << endl;
+			exit(1);
+		}
+		vertexList[arrayIndex] = (float *) malloc(3 * sizeof(float));
+		if(vertexList[arrayIndex] == NULL)
 		{
 			cout << "Error: Malloc unable to allocate enough memory" << endl;
 			exit(1);
 		}
 	}
 	
-	int arrayIndex = 0;	
+	
 	while(model) //the model was successfully read
 	{
+		
 		
 		//Tokenize the line based on " "
 		string token;
 		istringstream iss(line);
+		
 		while(getline(iss, token, ' '))
 		{
 			//convert the token to a float value
@@ -58,15 +71,28 @@ float** readModel(string filePath)
 			{
 				cout << "Error converting string to float" << endl;
 			}
+			vertexList[arrayIndex][index] = pointCoord;
 			
-			points[arrayIndex] = pointCoord;
-			token.clear();
-			arrayIndex++;
-			points = (float *)realloc(points, (arrayIndex + 1) * sizeof(float));
-			if(points == NULL)
+						
+			index++; 
+			if(index == 3)
 			{
-				cout << "Error: Malloc unable to allocate enough memory" << endl;
-				exit(1);
+				//We've just read a full set of vertex coordinates, Allocate some space for the next set
+				arrayIndex++;
+				vertexList = (float **)realloc(vertexList, (arrayIndex+1) * sizeof(float));
+				if(vertexList == NULL)
+				{
+					cout << "Error: Malloc unable to allocate enough memory" << endl;
+					exit(1);
+				}
+				vertexList[arrayIndex] = (float *) malloc(3 * sizeof(float));
+				if(vertexList[arrayIndex] == NULL)
+				{
+					cout << "Error: Malloc unable to allocate enough memory" << endl;
+					exit(1);
+				}
+				index = 0;
+				Length = arrayIndex;
 			}
 		}
 		
@@ -74,65 +100,12 @@ float** readModel(string filePath)
 		getline(model, line);// get the next line	
 	}
 	
-	
-	//At this point we know the total number of points, Dividing by 3 will give us the right amount of values
-	maxVerticies = arrayIndex / 3;
-	Length = maxVerticies;
-	line.clear();
-	
-	float **vertexList;
-	
-	vertexList = (float **) malloc(maxVerticies * sizeof(float));
-	if(vertexList == NULL)
-	{
-		cout << "Error: malloc could not allocate enough space" << endl;
-		exit(1);
-	}
-	
-	int i;
-	//Allocate space for the floats
-	for(i = 0; i < maxVerticies; i++)
-	{
-		vertexList[i] = (float *) malloc(3 * sizeof(float)); //3 is used because we have X, Y, Z values
-		if(vertexList[i] == NULL)
-		{
-			cout << "Error: malloc could not allocate enough space" << endl;
-			exit(1);
-		}
-	}
-	
-	model.close();
-
-	
-	//Fill the actual matrix with the values that are being temporarily stored
-	//in the array.
-	
-
-	int x = 0;
-	int y = 0;
-	int pointLoop = 0;
-	
-	for(x = 0; x < maxVerticies; x++)
-	{
-		for(y = 0; y < 3; y++)
-		{
-			vertexList[x][y] = points[pointLoop];
-			pointLoop++;
-		}
-	}
-	
-	
-	
-	free(points); //free the memory associated with this array	
-	
 	return vertexList;
 }
 
 int main(int argc, char *argv[])
 {
-	float **value = readModel("cube.RAW");
-
-	cout << Length << endl;
+	float **value = readModel("cylinder.RAW");
 	
 	int x,y;
 	for(x = 0; x < Length; x++)
