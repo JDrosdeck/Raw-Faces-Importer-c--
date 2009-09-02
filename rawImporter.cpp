@@ -1,3 +1,6 @@
+//rawImporter.cpp written by Jonathan Drosdeck
+
+
 #include <stdio.h>
 #include <string.h>
 #include <string>
