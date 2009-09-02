@@ -11,9 +11,9 @@
 
 using namespace std;
 
-const float BOX_SIZE = 7.0f; //The length of each side of the cube
+const float BOX_SIZE = 7.0f; 
 float _angle = 0;            //The rotation of the box
-GLuint _textureId;           //The OpenGL id of the texture
+
 
 void handleKeypress(unsigned char key, int x, int y) {
 	switch (key) {
@@ -22,7 +22,6 @@ void handleKeypress(unsigned char key, int x, int y) {
 	}
 }
 
-//Makes the image into a texture, and returns the id of the texture
 
 
 void initRendering() {
@@ -61,16 +60,14 @@ void drawScene() {
 	
 	glBegin(GL_QUADS);
 	
-	//Top face
-	
-	//glColor3f(1.0f, 1.0f, 0.0f);
-	//glNormal3f(0.0, 1.0f, 0.0f);
-	
-	
-	
-	
-	
 
+
+	/*
+	Code for importing a model.
+	NOTE: Remember to free each row of vertex's after you load them. Otherwise you'll get a huge memory leak
+	*/
+	
+	
 	float **model = readModel("small_blimp.RAW");
 	int x;
 	for(x = 0; x < getLength(); x++)
@@ -79,16 +76,10 @@ void drawScene() {
 		free(model[x]);
 	}
 
-	free(model);
-
-
-
+	free(model);	
 	
 	glEnd();
-	
-
 	glDisable(GL_TEXTURE_2D);
-	
 	glutSwapBuffers();
 }
 
