@@ -62,8 +62,9 @@ void drawScene() {
 	glBegin(GL_QUADS);
 	
 	//Top face
-	glColor3f(1.0f, 1.0f, 0.0f);
-	glNormal3f(0.0, 1.0f, 0.0f);
+	
+	//glColor3f(1.0f, 1.0f, 0.0f);
+	//glNormal3f(0.0, 1.0f, 0.0f);
 	
 	
 	
@@ -75,6 +76,7 @@ void drawScene() {
 	for(x = 0; x < getLength(); x++)
 	{
 		glVertex3f(model[x][0], model[x][1], model[x][2]);
+		free(model[x]);
 	}
 
 	free(model);
