@@ -1,17 +1,9 @@
 //rawImporter.cpp written by Jonathan Drosdeck
 
 
-#include <stdio.h>
-#include <string.h>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <cstdlib>
+#include "rawImporter.h"
 
-using namespace std;
-
-int Length;
+int Length = 0;
 int Width = 3; //(x,y,z)
 
 /*
@@ -104,6 +96,7 @@ int main(int argc, char *argv[])
 {
 	float **value = readModel("shape.RAW");
 	
+	
 	int x,y;
 	for(x = 0; x < Length; x++)
 	{
@@ -115,6 +108,7 @@ int main(int argc, char *argv[])
 		
 		cout << endl;
 	}
+
 	
 	free(value);
 	exit(0);
