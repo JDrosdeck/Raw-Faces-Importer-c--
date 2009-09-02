@@ -14,8 +14,6 @@ using namespace std;
 int Length;
 int Width = 3; //(x,y,z)
 
-
-
 /*
 readModel will read in the vertex coordinates from a .RAW file and return a 2D matrix
 of the vertex's (x,y,z)
@@ -40,9 +38,7 @@ float** readModel(string filePath)
 	getline(model, line);
 	if(model) 
 	{
-
-		//The model is OK for reading, Allocate some space for the first numbers
-		
+		//The model is OK for reading, Allocate some space for the first numbers	
 		vertexList = (float **) malloc(1 * sizeof(float));
 		if(vertexList == NULL)
 		{
@@ -60,8 +56,6 @@ float** readModel(string filePath)
 	
 	while(model) //the model was successfully read
 	{
-		
-		
 		//Tokenize the line based on " "
 		string token;
 		istringstream iss(line);
@@ -74,8 +68,8 @@ float** readModel(string filePath)
 			{
 				cout << "Error converting string to float" << endl;
 			}
-			vertexList[arrayIndex][index] = pointCoord;
 			
+			vertexList[arrayIndex][index] = pointCoord; //place the value in the matrix
 						
 			index++; 
 			if(index == 3)
@@ -108,7 +102,7 @@ float** readModel(string filePath)
 
 int main(int argc, char *argv[])
 {
-	float **value = readModel("cylinder.RAW");
+	float **value = readModel("shape.RAW");
 	
 	int x,y;
 	for(x = 0; x < Length; x++)
