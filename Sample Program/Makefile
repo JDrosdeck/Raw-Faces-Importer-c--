@@ -1,11 +1,11 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall 
 PROG = viewer
 
 SRCS = main.cpp rawImporter.cpp
 
 ifeq ($(shell uname),Darwin)
-	LIBS = -framework OpenGL -framework GLUT
+	LIBS = -framework OpenGL -framework GLUT -pthread
 else
 	LIBS = -lglut
 endif
