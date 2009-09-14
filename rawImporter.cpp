@@ -10,7 +10,7 @@ int Width = 3; //(x,y,z)
 readModel will read in the vertex coordinates from a .RAW file and return a 2D matrix
 of the vertex's (x,y,z)
 */
-float** readModel(string filePath)
+float** readModel(string filePath, float xpos, float ypos, float zpos)
 {
 	ifstream model;
 	model.open(filePath.c_str());
@@ -61,7 +61,20 @@ float** readModel(string filePath)
 				cout << "Error converting string to float" << endl;
 			}
 			
-			vertexList[arrayIndex][index] = pointCoord; //place the value in the matrix
+			if(index == 0)
+			{
+				vertexList[arrayIndex][index] = pointCoord + xpos; //place the value in the matrix
+			}
+			else
+			if(index == 1)
+			{
+				vertexList[arrayIndex][index] = pointCoord + ypos; //place the value in the matrix
+			}
+			else
+			if(index == 2)
+			{
+				vertexList[arrayIndex][index] = pointCoord + zpos; //place the value in the matrix
+			}
 						
 			index++; 
 			if(index == 3)
@@ -92,25 +105,7 @@ float** readModel(string filePath)
 	return vertexList;
 }
 
-int main(int argc, char *argv[])
+int getLength()
 {
-	float **value = readModel("shape.RAW");
-	
-	
-	int x,y;
-	for(x = 0; x < Length; x++)
-	{
-		cout << x << ": ";
-		for(y = 0; y < Width; y++)
-		{
-			cout << value[x][y] << " ";
-		}
-		
-		cout << endl;
-	}
-
-	
-	free(value);
-	exit(0);
-	
+	return Length;
 }

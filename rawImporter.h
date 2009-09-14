@@ -7,4 +7,5 @@
 #include <cstdlib>
 
 using namespace std;
-float** readModel(string filePath);
+float** readModel(string filePath, float xpos, float ypos, float zpos);
+int getLength();
