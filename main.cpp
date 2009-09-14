@@ -15,6 +15,7 @@
 
 using namespace std;
 
+//used for menu items
 #define WIRE 1
 #define POINT 2
 #define ROTATE 3
@@ -30,10 +31,12 @@ bool spin = false;
 bool wire = false;
 bool point = false;
 
+char * fileName;
 
 void handleKeypress(unsigned char key, int x, int y)
  {
-	switch (key) {
+	switch (key) 
+	{
 		case 'w':
 			zpos+=5;
 			break;
@@ -57,9 +60,6 @@ void handleKeypress(unsigned char key, int x, int y)
 	}
 }
 
-
-
-
 void initRendering() 
 {
 	glEnable(GL_DEPTH_TEST);
@@ -70,7 +70,8 @@ void initRendering()
 	
 }
 
-void handleResize(int w, int h) {
+void handleResize(int w, int h)
+{
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -85,7 +86,6 @@ void drawScene()
 	glTranslatef(xpos, ypos, zpos);
 	
 	//gluLookAt(xpos, ypos, zpos, xpos,0.0,0.0,0.0,1.0,0.0);
-
 	
 	GLfloat ambientLight[] = {0.6f, 0.6f, 0.3f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
@@ -94,43 +94,23 @@ void drawScene()
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
-
-	
-	
-	
 	glRotatef(-_angle, 0.0f, 1.0f, 1.0f);
-	
 	glBegin(GL_QUADS);
-
-
+	
 	/*
 	Code for importing a model.
-	NOTE: Remember to free each row of vertex's after you load them. Otherwise you'll get a huge memory leak
+	NOTE: Remember to free each row of vertex's after you load them. Or else there will be a memory leak
 	*/
-	
-	
-	
-	
-	float **model = readModel("small_blimp.RAW", 0.0, -5.0, -3.0);
+
+	float **model = readModel(fileName, 0.0, -5.0, -3.0);
 	int x;
 	for(x = 0; x < getLength(); x++)
 	{
 		glVertex3f(model[x][0], model[x][1], model[x][2]);
-		free(model[x]);
+		free(model[x]); //free memory associated with the column
 	}
-	free(model);
+	free(model); //free memory assocated to the rows
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	glEnd();
 	//glDisable(GL_TEXTURE_2D);
 	glutSwapBuffers();
@@ -148,16 +128,18 @@ void update(int value)
 			_angle -= 360;
 		}
 	}
-		glutPostRedisplay();
-		glutTimerFunc(25, update, 0);
+	
+	glutPostRedisplay();
+	glutTimerFunc(25, update, 0);
 	
 }
 
-void processMenu(int option) {
-
-	switch (option) {
+void processMenu(int option) 
+{
+	switch (option) 
+	{
 		case WIRE : 
-			if(wire == false)
+			if(wire == false) //turns on wire mode
 		 	{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				point = false;
@@ -170,19 +152,17 @@ void processMenu(int option) {
 			}
 			
 			break;
-		case POINT:
+		case POINT: //turns on point mode
 			if(point == false)
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 				wire = false;
-				point = true;
-				
+				point = true;		
 			}
-			else
+			else //turns on fill
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 				point = false;
-				
 			}
 			break;
 			
@@ -192,21 +172,15 @@ void processMenu(int option) {
 			else
 				spin = false;
 			break;
-		case FULL:
+		case FULL: //full screenmode
 			glutFullScreen();
-			break;
-			
-
+			break;		
 	}
 }
 
 void createMenu() {
 
 	int menu;
-
-	// create the menu and
-	// tell glut that "processMenuEvents" will 
-	// handle the events
 	menu = glutCreateMenu(processMenu);
 	
 	//add entries to our menu
@@ -219,14 +193,15 @@ void createMenu() {
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-
-
-
-
 int main(int argc, char** argv) 
 {
+	if(argc != 2)
+	{
+		printf("Usage: ./viewer modelToView.raw\n");
+		exit(1);
+	}
 	
-	
+	fileName = argv[1];
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(600, 600);
@@ -237,9 +212,7 @@ int main(int argc, char** argv)
 	glutReshapeFunc(handleResize);
 	glutTimerFunc(25, update, 0);
 	createMenu();
-	glutMainLoop();
-
-	
+	glutMainLoop();	
 	return 0;
 }
 

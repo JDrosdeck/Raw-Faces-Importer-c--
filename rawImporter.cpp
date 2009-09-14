@@ -105,6 +105,7 @@ float** readModel(string filePath, float xpos, float ypos, float zpos)
 	return vertexList;
 }
 
+//There must be a better way to do this
 int getLength()
 {
 	return Length;
